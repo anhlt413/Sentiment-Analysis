@@ -11,9 +11,11 @@ class RNNModel(nn.Module):
             embed_dim=50,
             embedding=None,
             use_embedding=True,
+            num_layers = 1, 
             rnn_cell_class=nn.LSTM,
             hidden_dim=50,
             bidirectional=False,
+            dropout = 0,
             freeze_embedding=False):
 
         super().__init__()
@@ -21,6 +23,8 @@ class RNNModel(nn.Module):
         self.use_embedding = use_embedding
         self.embed_dim = embed_dim
         self.hidden_dim = hidden_dim
+        self.num_layers = num_layers 
+        self.dropout = dropout 
         self.bidirectional = bidirectional
         self.freeze_embedding = freeze_embedding
         # Graph
@@ -30,7 +34,9 @@ class RNNModel(nn.Module):
             self.embed_dim = self.embedding.embedding_dim
         self.rnn = rnn_cell_class(
             input_size=self.embed_dim,
+            num_layers = self.num_layers, 
             hidden_size=hidden_dim,
+            dropout  = self.dropout,
             batch_first=True,
             bidirectional=bidirectional)
 
